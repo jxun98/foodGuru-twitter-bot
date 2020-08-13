@@ -2,8 +2,9 @@
   "name": "foodGuru-twitter-bot",
   "version": "1.0.0",
   "description": "Twitter bot that makes food suggestions.",
-  "main": "bot.js",
+  "main": "./src/bot.js",
   "scripts": {
+    "start": "node ./src/bot.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
