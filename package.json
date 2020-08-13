@@ -1,8 +1,8 @@
 {
   "name": "foodGuru-twitter-bot",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "description": "Twitter bot that makes food suggestions.",
+  "main": "bot.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -16,5 +16,8 @@
   "bugs": {
     "url": "https://github.com/jxun98/foodGuru-twitter-bot/issues"
   },
-  "homepage": "https://github.com/jxun98/foodGuru-twitter-bot#readme"
+  "homepage": "https://github.com/jxun98/foodGuru-twitter-bot#readme",
+  "dependencies": {
+    "twit": "^2.2.11"
+  }
 }
