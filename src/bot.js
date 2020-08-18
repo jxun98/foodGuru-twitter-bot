@@ -37,7 +37,7 @@ function tweetedAt(eventMessage) {
 function sendTweet(incomingTweetIdStr, messageText) {
 
   // Update the lastTweetSent variable, so we can make sure to not send duplicate tweets
-  // later on.
+  // later on. Don't send in T.post then clause in case of network issues.
   lastTweetSent = messageText;
 
   let params = {
@@ -45,7 +45,10 @@ function sendTweet(incomingTweetIdStr, messageText) {
     status: messageText
   };
 
-  T.post('statuses/update', params).catch((err) => {
+  T.post('statuses/update', params).then((results) => {
+    console.log('Tweet sent: ' + messageText);
+  }  
+  ).catch((err) => {
     console.log(err);
   });
 }
