@@ -1,14 +1,14 @@
 {
     "food_suggestions":
     [
-        "I heard * is in season.",
+        "I heard * is in season!",
         "Why not try *?",
         "How about *?",
         "Have you thought about *?",
-        "* is the way to go.",
-        "I suggest trying out *.",
-        "I recommend giving * a go.",
-        "Give * a go."
+        "* is the way to go!",
+        "I suggest trying out *!",
+        "I recommend giving * a go!",
+        "Give * a go!"
     ],
     "command_not_recognized": 
     [

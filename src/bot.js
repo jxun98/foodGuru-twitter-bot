@@ -17,10 +17,11 @@ var stream = T.stream('statuses/filter', {track: '@FoodGuruBot'});
 
 stream.on('tweet', tweetedAt);
 
+// Called when an new event happens on the stream connection.
 function tweetedAt(eventMessage) {
   // Check to see if this is a tweet towards me.
   if (eventMessage.in_reply_to_screen_name === 'FoodGuruBot'){
-    let tweetId = eventMessage.id;
+    let incomingTweetIdStr = eventMessage.id_str;
     let screenName = eventMessage.user.screen_name;
 
     let tweetText = trimTweet(eventMessage.text);
@@ -28,8 +29,25 @@ function tweetedAt(eventMessage) {
 
     let messageText = generateMessageText(screenName, commandObject);
 
-    console.log(messageText);
+    sendTweet(incomingTweetIdStr, messageText);
   }
+}
+
+// Replies to incoming tweet.
+function sendTweet(incomingTweetIdStr, messageText) {
+
+  // Update the lastTweetSent variable, so we can make sure to not send duplicate tweets
+  // later on.
+  lastTweetSent = messageText;
+
+  let params = {
+    in_reply_to_status_id: incomingTweetIdStr,
+    status: messageText
+  };
+
+  T.post('statuses/update', params).catch((err) => {
+    console.log(err);
+  });
 }
 
 function trimTweet(tweetText) {
@@ -42,11 +60,11 @@ function trimTweet(tweetText) {
 function getCommandObject(tweetText) {
   let commandObject = {};
 
-  tweetText = tweetText.toLowerCase();
+  let tweetTextLowerCase = tweetText.toLowerCase();
 
-  if (tweetText.startsWith('i\'m hungry')) {
+  if (tweetTextLowerCase.startsWith('i\'m hungry')) {
     commandObject['id'] = 1;
-  } else if (tweetText.startsWith('pick one:')) {
+  } else if (tweetTextLowerCase.startsWith('pick one:')) {
     commandObject['id'] = 2;
     commandObject['options'] = getPickOptions(tweetText);
   } else {
@@ -57,7 +75,7 @@ function getCommandObject(tweetText) {
 }
 
 function getPickOptions(tweetText) {
-  tweetText = tweetText.replace('pick one:', '');
+  tweetText = tweetText.replace(new RegExp('pick one:', 'ig'), '');
   tweetText = tweetText.trim();
 
   let options = tweetText.split(',');
@@ -118,8 +136,4 @@ function generateMessageText(screenName, commandObject) {
   }
 
   return messageText;
-}
-
-function sendTweet(tweet) {
-  T.post('statuses/update', {status: tweet});
 }
